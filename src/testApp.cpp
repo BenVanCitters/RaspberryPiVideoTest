@@ -37,6 +37,19 @@ void testApp::setup(){
 #endif
     
 	doShader = true;
+    m_ofVBOMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+    m_ofVBOMesh.enableTextures();
+    m_ofVBOMesh.addVertex(ofVec3f(0,0,0));
+    m_ofVBOMesh.addTexCoord(ofVec2f(0,0));
+    
+    m_ofVBOMesh.addVertex(ofVec3f(0,240,0));
+    m_ofVBOMesh.addTexCoord(ofVec2f(0,100));
+    
+    m_ofVBOMesh.addVertex(ofVec3f(320,0,0));
+    m_ofVBOMesh.addTexCoord(ofVec2f(100,0));
+    
+    m_ofVBOMesh.addVertex(ofVec3f(320,240,0));
+    m_ofVBOMesh.addTexCoord(ofVec2f(100,100));
 }
 
 
@@ -63,24 +76,29 @@ void testApp::draw(){
     if( doShader ){
 		shader.begin();
         //we want to pass in some varrying values to animate our type / color
+//        shader.setUniformTexture("s_texture", vidGrabber.getTextureReference(), 1);
         shader.setUniform1f("timeValX", ofGetElapsedTimef() * 0.1 );
         shader.setUniform1f("timeValY", -ofGetElapsedTimef() * 0.18 );
         
         //we also pass in the mouse position
         //we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped.
         shader.setUniform2f("mouse", mouseX - ofGetWidth()/2, ofGetHeight()/2-mouseY );
-        shader.setUniformTexture("tex0", vidGrabber.getTextureReference() , 1 );
+        shader.setUniformTexture("s_texture", vidGrabber.getTextureReference() , 1 );
 	}
     
     ofSetHexColor(0xffffff);
-	vidGrabber.draw(20,20);
+    ofPushMatrix();
+    ofTranslate(mouseX, mouseY);
+    m_ofVBOMesh.draw();
+    ofPopMatrix();
+//    ofRect(mouseX,mouseY,320,240);//
+//	vidGrabber.draw(20,20);
 
 	if( doShader ){
 		shader.end();
 	}
 
-    
-
+//    vidGrabber.draw(20,20);
 //	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 //	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
 }

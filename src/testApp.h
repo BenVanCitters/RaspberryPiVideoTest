@@ -27,4 +27,5 @@ class testApp : public ofBaseApp{
 		int 				camHeight;
     ofShader shader;
     bool doShader;
+    ofVboMesh m_ofVBOMesh;
 };

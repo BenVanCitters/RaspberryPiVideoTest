@@ -2,7 +2,7 @@
 // define default precision for float, vec, mat.
 precision highp float;
 #endif
-
+uniform sampler2D s_texture;
 uniform vec4 globalColor;
 
 void main(){
@@ -18,7 +18,9 @@ void main(){
 	//we use the mod function to only draw pixels if they are every 2 in x or every 4 in y
 //	if( mod(xVal, 2.0) == 0.5 && mod(yVal, 4.0) == 0.5 )
 //    {
-		gl_FragColor = globalColor;
+//		gl_FragColor = globalColor;
+    gl_FragColor = texture2DRect( s_texture,  gl_TexCoord[0].st);
+//    texture2D( samplerForMyTexture, vec2( x, y ) );
 //    }
 //    else
 //    {
