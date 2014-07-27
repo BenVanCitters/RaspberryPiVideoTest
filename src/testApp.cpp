@@ -25,6 +25,18 @@ void testApp::setup(){
 	videoInverted 	= new unsigned char[camWidth*camHeight*3];
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
 	ofSetVerticalSync(true);
+    
+#ifdef TARGET_OPENGLES
+	shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
+#else
+	if(ofGetGLProgrammableRenderer()){
+		shader.load("shaders_gl3/noise.vert", "shaders_gl3/noise.frag");
+	}else{
+		shader.load("shaders/noise.vert", "shaders/noise.frag");
+	}
+#endif
+    
+	doShader = true;
 }
 
 
@@ -48,8 +60,28 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofSetHexColor(0xffffff);
-	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
+    if( doShader ){
+		shader.begin();
+        //we want to pass in some varrying values to animate our type / color
+        shader.setUniform1f("timeValX", ofGetElapsedTimef() * 0.1 );
+        shader.setUniform1f("timeValY", -ofGetElapsedTimef() * 0.18 );
+        
+        //we also pass in the mouse position
+        //we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped.
+        shader.setUniform2f("mouse", mouseX - ofGetWidth()/2, ofGetHeight()/2-mouseY );
+        shader.setUniformTexture("tex0", vidGrabber.getTextureReference() , 1 );
+	}
+    
+    ofSetHexColor(0xffffff);
+	vidGrabber.draw(20,20);
+
+	if( doShader ){
+		shader.end();
+	}
+
+    
+
+//	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 //	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
 }
 

@@ -25,4 +25,6 @@ class testApp : public ofBaseApp{
 		ofTexture			videoTexture;
 		int 				camWidth;
 		int 				camHeight;
+    ofShader shader;
+    bool doShader;
 };

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>A47697B4-B724-435C-9255-9452F7714EF7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>videoGrabberExample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D8E0060B-5D22-490C-B185-923BCF5B45AD</key>
+		<string>https://github.com/BenVanCitters/RaspberryPiVideoTest.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>videoGrabberExample.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D8E0060B-5D22-490C-B185-923BCF5B45AD</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/BenVanCitters/RaspberryPiVideoTest.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D8E0060B-5D22-490C-B185-923BCF5B45AD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D8E0060B-5D22-490C-B185-923BCF5B45AD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RaspberryPiVideoTest</string>
+		</dict>
+	</array>
+</dict>
+</plist>
