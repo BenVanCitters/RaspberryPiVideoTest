@@ -35,22 +35,22 @@ void testApp::update(){
 	
 	vidGrabber.update();
 	
-	if (vidGrabber.isFrameNew()){
-		int totalPixels = camWidth*camHeight*3;
-		unsigned char * pixels = vidGrabber.getPixels();
-		for (int i = 0; i < totalPixels; i++){
-			videoInverted[i] = 255 - pixels[i];
-		}
-		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
-	}
+//	if (vidGrabber.isFrameNew()){
+//		int totalPixels = camWidth*camHeight*3;
+//		unsigned char * pixels = vidGrabber.getPixels();
+//		for (int i = 0; i < totalPixels; i++){
+//			videoInverted[i] = 255 - pixels[i];
+//		}
+//		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
+//	}
 
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	ofSetHexColor(0xffffff);
-	vidGrabber.draw(20,20);
-	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
+	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
+//	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
 }
 
 
