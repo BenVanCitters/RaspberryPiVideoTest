@@ -20,7 +20,7 @@ void testApp::setup(){
     
 	vidGrabber.setDeviceID(0);
 	vidGrabber.setDesiredFrameRate(60);
-	vidGrabber.initGrabber(camWidth,camHeight);
+	vidGrabber.initGrabber(camWidth,camHeight,true);
 	
 	videoInverted 	= new unsigned char[camWidth*camHeight*3];
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
@@ -55,9 +55,10 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-	
-	ofBackground(100,100,100);
-	
+	float startTime =ofGetElapsedTimef();
+    ofBackground(100,100,100);
+    
+//	ofLog(OF_LOG_NOTICE, "starting update at %f",);
 	vidGrabber.update();
 	
 //	if (vidGrabber.isFrameNew()){
@@ -68,11 +69,12 @@ void testApp::update(){
 //		}
 //		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 //	}
-
+    ofLog(OF_LOG_NOTICE, "completing update at %f",(ofGetElapsedTimef()-startTime));
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
+    float startTime =ofGetElapsedTimef();
     if( doShader ){
 		shader.begin();
         //we want to pass in some varrying values to animate our type / color
@@ -97,7 +99,7 @@ void testApp::draw(){
 	if( doShader ){
 		shader.end();
 	}
-
+ofLog(OF_LOG_NOTICE, "completing draw at %f",(ofGetElapsedTimef()-startTime));
 //    vidGrabber.draw(20,20);
 //	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 //	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
