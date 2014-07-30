@@ -44,7 +44,7 @@ float noise(vec2 coord,float d){
 	vec4 w=vec4(q.x*q.y,p.x*q.y,p.x*p.y,q.x*p.y); 
 
 	return dot(vec4(rand(C[0],C[1],C[2],C[3])),w); 
-} 
+}  
 
 
 void main(){

@@ -18,7 +18,7 @@ void testApp::setup(){
         }
 	}
     
-	vidGrabber.setDeviceID(0);
+	vidGrabber.setDeviceID(0); 
 	vidGrabber.setDesiredFrameRate(60);
 	vidGrabber.initGrabber(camWidth,camHeight,true);
 	
