@@ -42,20 +42,20 @@ void testApp::setup(){
 	camHeight 		= 240;
 	
     //we can now get back a list of devices. 
-	vector<ofVideoDevice> devices = vidGrabber.listDevices();
-	
-    for(int i = 0; i < devices.size(); i++){
-		cout << devices[i].id << ": " << devices[i].deviceName; 
-        if( devices[i].bAvailable ){
-            cout << endl;
-        }else{
-            cout << " - unavailable " << endl; 
-        }
-	}
-    
-	vidGrabber.setDeviceID(0);
-	vidGrabber.setDesiredFrameRate(60);
-	vidGrabber.initGrabber(camWidth,camHeight,true);
+//	vector<ofVideoDevice> devices = vidGrabber.listDevices();
+//	
+//    for(int i = 0; i < devices.size(); i++){
+//		cout << devices[i].id << ": " << devices[i].deviceName; 
+//        if( devices[i].bAvailable ){
+//            cout << endl;
+//        }else{
+//            cout << " - unavailable " << endl; 
+//        }
+//	}
+//    
+//	vidGrabber.setDeviceID(0);
+//	vidGrabber.setDesiredFrameRate(60);
+//	vidGrabber.initGrabber(camWidth,camHeight,true);
 	
 	videoInverted 	= new unsigned char[camWidth*camHeight*3];
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
@@ -84,7 +84,7 @@ void testApp::update(){
     ofBackground(100,100,100);
     
 //	ofLog(OF_LOG_NOTICE, "starting update at %f",);
-	vidGrabber.update();
+//	vidGrabber.update();
 	
 //	if (vidGrabber.isFrameNew()){
 //		int totalPixels = camWidth*camHeight*3;
@@ -110,7 +110,7 @@ void testApp::draw(){
         //we also pass in the mouse position
         //we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped.
         shader.setUniform2f("mouse", mouseX - ofGetWidth()/2, ofGetHeight()/2-mouseY );
-        shader.setUniformTexture("s_texture", vidGrabber.getTextureReference() , 1 );
+//        shader.setUniformTexture("s_texture", vidGrabber.getTextureReference() , 1 );
 	}
     
     ofSetHexColor(0xffffff);
@@ -145,7 +145,7 @@ void testApp::keyPressed  (int key){
     // For Xcode 4.4 and greater, see this forum post on instructions on installing the SDK
     // http://forum.openframeworks.cc/index.php?topic=10343        
 	if (key == 's' || key == 'S'){
-		vidGrabber.videoSettings();
+//		vidGrabber.videoSett`ings();
 	}
 	
 	

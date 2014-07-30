@@ -20,7 +20,7 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);		
 		
-		ofVideoGrabber 		vidGrabber;
+//		ofVideoGrabber 		vidGrabber;
 		unsigned char * 	videoInverted;
 		ofTexture			videoTexture;
 		int 				camWidth;
