@@ -25,6 +25,8 @@ class testApp : public ofBaseApp{
 		ofTexture			videoTexture;
 		int 				camWidth;
 		int 				camHeight;
+    float mUpdateTime;
+    float mDrawTime;
     ofShader shader;
     bool doShader;
     ofVboMesh m_ofVBOMesh; 

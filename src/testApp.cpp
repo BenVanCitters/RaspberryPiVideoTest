@@ -77,7 +77,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	float startTime =ofGetElapsedTimef();
-    ofBackground(100,100,100);
+    ofBackground(0,0,0);
     
 //	ofLog(OF_LOG_NOTICE, "starting update at %f",);
 	vidGrabber.update();
@@ -90,7 +90,8 @@ void testApp::update(){
 //		}
 //		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 //	}
-//    ofLog(OF_LOG_NOTICE, "completing update at %f",(ofGetElapsedTimef()-startTime));
+//    ofLog(OF_LOG_NOTICE, "completing update at %f",);
+    mUpdateTime =(ofGetElapsedTimef()-startTime);
 }
 
 //--------------------------------------------------------------
@@ -109,11 +110,14 @@ void testApp::draw(){
         shader.setUniformTexture("s_texture", vidGrabber.getTextureReference() , 1 );
 	}
     
-    ofSetHexColor(0xffffff);
+//    ofSetHexColor(0xffffff);
+    float curTime = ofGetElapsedTimef();
+    ofVec2f rot(400*cos(curTime),400*sin(curTime));
     ofPushMatrix();
     ofTranslate(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
-    ofTranslate(400*cos(ofGetElapsedTimef()),400*sin(ofGetElapsedTimef()));
+    ofTranslate(rot);
     m_ofVBOMesh.draw();
+    
     ofPopMatrix();
     
     ofRect(500,500,320,240);//
@@ -121,8 +125,14 @@ void testApp::draw(){
 	if( doShader ){
 		shader.end();
 	}
-    vidGrabber.draw(20,20);
-ofLog(OF_LOG_NOTICE, "completing draw at %f",(ofGetElapsedTimef()-startTime));
+    mDrawTime =(ofGetElapsedTimef()-startTime);
+    
+    
+    ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),100,100);
+    ofDrawBitmapString("rot: "+ofToString(rot),100,200);
+//    vidGrabber.draw(20,20);
+    
+//ofLog(OF_LOG_NOTICE, "completing draw at %f",);
 //    vidGrabber.draw(20,20);
 //	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 //	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
