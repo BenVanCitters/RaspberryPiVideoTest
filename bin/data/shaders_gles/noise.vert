@@ -86,5 +86,5 @@ void main(){
 	pos.y += noiseAmntY * 10.0;
 	
 	//finally set the pos to be that actual position rendered
-	gl_Position = pos;
+	gl_Position = modelViewProjectionMatrix * position;
 }

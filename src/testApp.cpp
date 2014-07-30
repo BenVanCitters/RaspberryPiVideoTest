@@ -56,8 +56,8 @@ void testApp::setup(){
 		shader.load("shaders/noise.vert", "shaders/noise.frag");
 	}
 #endif
-    ofEnableNormalizedTexCoords();
-	doShader = false;
+//    ofEnableNormalizedTexCoords();
+	doShader = true;
     m_ofVBOMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
     m_ofVBOMesh.enableTextures();
     m_ofVBOMesh.addVertex(ofVec3f(0,0,0));
@@ -90,7 +90,7 @@ void testApp::update(){
 //		}
 //		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 //	}
-    ofLog(OF_LOG_NOTICE, "completing update at %f",(ofGetElapsedTimef()-startTime));
+//    ofLog(OF_LOG_NOTICE, "completing update at %f",(ofGetElapsedTimef()-startTime));
 }
 
 //--------------------------------------------------------------
@@ -115,13 +115,13 @@ void testApp::draw(){
     ofTranslate(400*cos(ofGetElapsedTimef()),400*sin(ofGetElapsedTimef()));
     m_ofVBOMesh.draw();
     ofPopMatrix();
-    ofRect(mouseX,mouseY,320,240);//
-
-	vidGrabber.draw(20,20);
+    
+    ofRect(500,500,320,240);//
 
 	if( doShader ){
 		shader.end();
 	}
+    vidGrabber.draw(20,20);
 ofLog(OF_LOG_NOTICE, "completing draw at %f",(ofGetElapsedTimef()-startTime));
 //    vidGrabber.draw(20,20);
 //	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
