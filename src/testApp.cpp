@@ -4,8 +4,8 @@
 void testApp::setup(){
 	
 #ifdef TARGET_OPENGLES
-    ofFile vertShader(ofToDataPath("shaders_gles/noise.vert"));
-    ofFile fragShader(ofToDataPath("shaders_gles/noise.frag"));
+    ofFile vertShader("shaders_gles/noise.vert");
+    ofFile fragShader("shaders_gles/noise.frag");
     if(vertShader.exists())
         ofLog(OF_LOG_NOTICE, "the vert exists/was found");
     else
@@ -15,6 +15,7 @@ void testApp::setup(){
         ofLog(OF_LOG_NOTICE, "the frag exists/was found");
     else
         ofLog(OF_LOG_ERROR, "the frag was not found!!");
+    
     shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
 #else
 	if(ofGetGLProgrammableRenderer()){
