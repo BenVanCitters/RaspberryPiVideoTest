@@ -56,21 +56,21 @@ void testApp::setup(){
 		shader.load("shaders/noise.vert", "shaders/noise.frag");
 	}
 #endif
-    
-	doShader = true;
+    ofEnableNormalizedTexCoords();
+	doShader = false;
     m_ofVBOMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
     m_ofVBOMesh.enableTextures();
     m_ofVBOMesh.addVertex(ofVec3f(0,0,0));
     m_ofVBOMesh.addTexCoord(ofVec2f(0,0));
     
     m_ofVBOMesh.addVertex(ofVec3f(0,240,0));
-    m_ofVBOMesh.addTexCoord(ofVec2f(0,100));
+    m_ofVBOMesh.addTexCoord(ofVec2f(0,camHeight));
     
     m_ofVBOMesh.addVertex(ofVec3f(320,0,0));
-    m_ofVBOMesh.addTexCoord(ofVec2f(100,0));
+    m_ofVBOMesh.addTexCoord(ofVec2f(camWidth,0));
     
     m_ofVBOMesh.addVertex(ofVec3f(320,240,0));
-    m_ofVBOMesh.addTexCoord(ofVec2f(100,100));
+    m_ofVBOMesh.addTexCoord(ofVec2f(camWidth,camHeight));
 }
 
 
@@ -111,11 +111,13 @@ void testApp::draw(){
     
     ofSetHexColor(0xffffff);
     ofPushMatrix();
-    ofTranslate(mouseX, mouseY);
+    ofTranslate(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
+    ofTranslate(400*cos(ofGetElapsedTimef()),400*sin(ofGetElapsedTimef()));
     m_ofVBOMesh.draw();
     ofPopMatrix();
-//    ofRect(mouseX,mouseY,320,240);//
-//	vidGrabber.draw(20,20);
+    ofRect(mouseX,mouseY,320,240);//
+
+	vidGrabber.draw(20,20);
 
 	if( doShader ){
 		shader.end();
