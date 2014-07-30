@@ -3,6 +3,40 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	
+#ifdef TARGET_OPENGLES
+    ofFile vertShader(ofToDataPath("shaders_gles/noise.vert"));
+    ofFile fragShader(ofToDataPath("shaders_gles/noise.frag"));
+    if(vertShader.exists())
+        ofLog(OF_LOG_NOTICE, "the vert exists/was found");
+    else
+        ofLog(OF_LOG_ERROR, "the vert was not found!!");
+    
+    if(fragShader.exists())
+        ofLog(OF_LOG_NOTICE, "the frag exists/was found");
+    else
+        ofLog(OF_LOG_ERROR, "the frag was not found!!");
+    shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
+#else
+	if(ofGetGLProgrammableRenderer()){
+		shader.load("shaders_gl3/noise.vert", "shaders_gl3/noise.frag");
+	}else{
+        ofFile vertShader(ofToDataPath("shaders/noise.vert"));
+        ofFile fragShader(ofToDataPath("shaders/noise.frag"));
+        if(vertShader.exists())
+            ofLog(OF_LOG_NOTICE, "the vert exists/was found");
+        else
+            ofLog(OF_LOG_ERROR, "the vert was not found!!");
+        
+        if(fragShader.exists())
+            ofLog(OF_LOG_NOTICE, "the frag exists/was found");
+        else
+            ofLog(OF_LOG_ERROR, "the frag was not found!!");
+		shader.load("shaders/noise.vert", "shaders/noise.frag");
+	}
+#endif
+    
+	doShader = true;
+    
 	camWidth 		= 320;	// try to grab at this size. 
 	camHeight 		= 240;
 	
@@ -26,38 +60,7 @@ void testApp::setup(){
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
 	ofSetVerticalSync(true);
     
-#ifdef TARGET_OPENGLES
-    ofFile vertShader(ofToDataPath("shaders_gles/noise.vert"));
-    ofFile fragShader(ofToDataPath("shaders_gles/noise.frag"));
-    if(vertShader.exists())
-    {
-        cout << "the vert exists/was found" << endl;
-    }
-    if(fragShader.exists())
-    {
-        cout << "the frag exists/was found" << endl;
-    }
-	shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
-#else
-	if(ofGetGLProgrammableRenderer()){
-		shader.load("shaders_gl3/noise.vert", "shaders_gl3/noise.frag");
-	}else{
-        ofFile vertShader(ofToDataPath("shaders/noise.vert"));
-        ofFile fragShader(ofToDataPath("shaders/noise.frag"));
-        if(vertShader.exists())
-        {
-            cout << "the vert exists/was found" << endl;
-        }
-        if(fragShader.exists())
-        {
-            cout << "the frag exists/was found" << endl;
-        }
 
-		shader.load("shaders/noise.vert", "shaders/noise.frag");
-	}
-#endif
-    
-	doShader = true;
     m_ofVBOMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
     m_ofVBOMesh.enableTextures();
     m_ofVBOMesh.addVertex(ofVec3f(0,0,0));
