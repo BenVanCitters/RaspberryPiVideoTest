@@ -136,11 +136,12 @@ void testApp::draw(){
     ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),600,100);
     ofDrawBitmapString("mVidUpdateInterval: "+ofToString(mVidUpdateInterval),600,150);
     ofDrawBitmapString("rot: "+ofToString(rot),600,200);
-    vidGrabber.draw(20,800);
+//    vidGrabber.draw(20,800);
+//    vidGrabber.draw(0,0,, <#float y#>, <#float w#>, <#float h#>)
     
 //ofLog(OF_LOG_NOTICE, "completing draw at %f",);
-    vidGrabber.draw(820,20);
-//	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
+//    vidGrabber.draw(820,20);
+	videoTexture.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 //	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
 }
 
