@@ -29,8 +29,5 @@ class testApp : public ofBaseApp{
     float mVidUpdateInterval;
     float mUpdateTime;
     float mDrawTime;
-    ofShader shader;
-    bool doShader;
-    ofVboMesh m_ofVBOMesh; 
     ofFbo m_frameBuffer;
 };

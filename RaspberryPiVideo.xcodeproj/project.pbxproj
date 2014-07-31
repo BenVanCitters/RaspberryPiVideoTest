@@ -60,12 +60,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2DD9AFBD1984A80500FDD61F /* noise.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.frag; sourceTree = "<group>"; };
-		2DD9AFBE1984A80500FDD61F /* noise.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.vert; sourceTree = "<group>"; };
-		2DD9AFC01984A80500FDD61F /* noise.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.frag; sourceTree = "<group>"; };
-		2DD9AFC11984A80500FDD61F /* noise.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.vert; sourceTree = "<group>"; };
-		2DD9AFC31984A80500FDD61F /* noise.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.frag; sourceTree = "<group>"; };
-		2DD9AFC41984A80500FDD61F /* noise.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.vert; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -120,46 +114,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2DD9AFBB1984A7E500FDD61F /* shaders */ = {
-			isa = PBXGroup;
-			children = (
-				2DD9AFBC1984A80500FDD61F /* shaders */,
-				2DD9AFBF1984A80500FDD61F /* shaders_gl3 */,
-				2DD9AFC21984A80500FDD61F /* shaders_gles */,
-			);
-			name = shaders;
-			sourceTree = "<group>";
-		};
-		2DD9AFBC1984A80500FDD61F /* shaders */ = {
-			isa = PBXGroup;
-			children = (
-				2DD9AFBD1984A80500FDD61F /* noise.frag */,
-				2DD9AFBE1984A80500FDD61F /* noise.vert */,
-			);
-			name = shaders;
-			path = bin/data/shaders;
-			sourceTree = "<group>";
-		};
-		2DD9AFBF1984A80500FDD61F /* shaders_gl3 */ = {
-			isa = PBXGroup;
-			children = (
-				2DD9AFC01984A80500FDD61F /* noise.frag */,
-				2DD9AFC11984A80500FDD61F /* noise.vert */,
-			);
-			name = shaders_gl3;
-			path = bin/data/shaders_gl3;
-			sourceTree = "<group>";
-		};
-		2DD9AFC21984A80500FDD61F /* shaders_gles */ = {
-			isa = PBXGroup;
-			children = (
-				2DD9AFC31984A80500FDD61F /* noise.frag */,
-				2DD9AFC41984A80500FDD61F /* noise.vert */,
-			);
-			name = shaders_gles;
-			path = bin/data/shaders_gles;
-			sourceTree = "<group>";
-		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,7 +171,6 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
-				2DD9AFBB1984A7E500FDD61F /* shaders */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,

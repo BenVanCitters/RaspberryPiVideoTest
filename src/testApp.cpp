@@ -33,52 +33,26 @@ void testApp::setup()
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
 //	ofSetVerticalSync(true);
     
-#ifdef TARGET_OPENGLES
-    ofFile vertShader(ofToDataPath("shaders_gles/noise.vert"));
-    ofFile fragShader(ofToDataPath("shaders_gles/noise.frag"));
-    if(vertShader.exists())
-    {
-        cout << "the vert exists/was found" << endl;
-    }
-    if(fragShader.exists())
-    {
-        cout << "the frag exists/was found" << endl;
-    }
-	shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
-#else
-	if(ofGetGLProgrammableRenderer())
-    {
-		shader.load("shaders_gl3/noise.vert", "shaders_gl3/noise.frag");
-	}else{
-        ofFile vertShader(ofToDataPath("shaders/noise.vert"));
-        ofFile fragShader(ofToDataPath("shaders/noise.frag"));
-        if(vertShader.exists())
-        {
-            cout << "the vert exists/was found" << endl;
-        }
-        if(fragShader.exists())
-        {
-            cout << "the frag exists/was found" << endl;
-        }
 
-		shader.load("shaders/noise.vert", "shaders/noise.frag");
-	}
+
+#ifdef OF_VIDEO_CAPTURE_IOS
+    cout <<  "ofxiOSVideoGrabber.h" << endl;
 #endif
-//    ofEnableNormalizedTexCoords();
-	doShader = true;
-    m_ofVBOMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
-    m_ofVBOMesh.enableTextures();
-    m_ofVBOMesh.addVertex(ofVec3f(0,0,0));
-    m_ofVBOMesh.addTexCoord(ofVec2f(0,0));
-    
-    m_ofVBOMesh.addVertex(ofVec3f(0,camHeight,0));
-    m_ofVBOMesh.addTexCoord(ofVec2f(0,camHeight));
-    
-    m_ofVBOMesh.addVertex(ofVec3f(camWidth,0,0));
-    m_ofVBOMesh.addTexCoord(ofVec2f(camWidth,0));
-    
-    m_ofVBOMesh.addVertex(ofVec3f(camWidth,camHeight,0));
-    m_ofVBOMesh.addTexCoord(ofVec2f(camWidth,camHeight));
+#ifdef OF_VIDEO_CAPTURE_QUICKTIME
+    cout <<  "ofQuickTimeGrabber.h" << endl;
+#endif
+#ifdef OF_VIDEO_CAPTURE_QTKIT
+    cout <<  "ofQTKitGrabber.h" << endl;
+#endif
+#ifdef OF_VIDEO_CAPTURE_DIRECTSHOW
+    cout <<   "ofDirectShowGrabber.h" << endl;
+#endif
+#ifdef OF_VIDEO_CAPTURE_GSTREAMER
+    cout <<  "ofGstVideoGrabber.h" << endl;
+#endif
+#ifdef OF_VIDEO_CAPTURE_ANDROID
+    cout <<  "ofxAndroidVideoGrabber.h" << endl;
+#endif
 }
 
 
@@ -87,8 +61,6 @@ void testApp::update()
 {
 	float startTime =ofGetElapsedTimef();
     
-    
-//	ofLog(OF_LOG_NOTICE, "starting update at %f",);
 	vidGrabber.update();
 	if (vidGrabber.isFrameNew())
     {
@@ -105,24 +77,16 @@ void testApp::update()
 		}
 		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 	}
-//    ofLog(OF_LOG_NOTICE, "completing update at %f",);
     mUpdateTime =(ofGetElapsedTimef()-startTime);
 }
 
 //--------------------------------------------------------------
 void testApp::draw()
 {
+    float startTime =ofGetElapsedTimef();
     m_frameBuffer.begin();
     ofBackground(0,0,0);
-    float startTime =ofGetElapsedTimef();
-    if( doShader )
-    {
-		shader.begin();
-        shader.setUniform1f("timeVal", ofGetElapsedTimef() * 0.1 );
-        shader.setUniformTexture("s_texture", videoTexture , 1 );
-	}
     
-//
     float curTime = ofGetElapsedTimef();
     ofSetColor(255*(1+cos(curTime))/2,255*(sin(curTime)+1)/2, 255*(cos(curTime)+1)/2,255*(sin(144+curTime)+1)/2);
 
@@ -130,16 +94,10 @@ void testApp::draw()
     ofPushMatrix();
     ofTranslate(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
     ofTranslate(rot);
-    m_ofVBOMesh.draw();
     ofRect(500,500,10,10);
     ofPopMatrix();
     
     ofRect(500,500,320,240);//
-
-	if( doShader )
-    {
-		shader.end();
-	}
     
     
 	videoTexture.draw(0,0);
