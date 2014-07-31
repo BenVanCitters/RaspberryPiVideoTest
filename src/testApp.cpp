@@ -118,6 +118,8 @@ void testApp::draw(){
     
 //    ofSetHexColor(0xffffff);
     float curTime = ofGetElapsedTimef();
+    ofSetColor(255*(1+cos(curTime))/2,255*(sin(curTime)+1)/2, 255*(cos(curTime)+1)/2,255*(sin(144+curTime)+1)/2);
+
     ofVec2f rot(400*cos(curTime),400*sin(curTime));
     ofPushMatrix();
     ofTranslate(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
@@ -141,7 +143,7 @@ void testApp::draw(){
     
 //ofLog(OF_LOG_NOTICE, "completing draw at %f",);
 //    vidGrabber.draw(820,20);
-	videoTexture.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
+	videoTexture.draw(0,0,1000,1000);
 //	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
 }
 
