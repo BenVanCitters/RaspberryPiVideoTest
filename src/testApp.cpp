@@ -9,7 +9,7 @@ void testApp::setup(){
     //we can now get back a list of devices. 
 	vector<ofVideoDevice> devices = vidGrabber.listDevices();
 	
-    for(int i = 0; i < devices.size(); i++){
+    for(unsigned int i = 0; i < devices.size(); i++){
 		cout << devices[i].id << ": " << devices[i].deviceName; 
         if( devices[i].bAvailable ){
             cout << endl;
@@ -113,7 +113,7 @@ void testApp::draw(){
         //we also pass in the mouse position
         //we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped.
         shader.setUniform2f("mouse", mouseX - ofGetWidth()/2, ofGetHeight()/2-mouseY );
-        shader.setUniformTexture("s_texture", vidGrabber.getTextureReference() , 1 );
+        shader.setUniformTexture("s_texture", videoTexture , 1 );
 	}
     
 //    ofSetHexColor(0xffffff);
