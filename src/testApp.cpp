@@ -3,8 +3,8 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	
-	camWidth 		= 320;	// try to grab at this size. 
-	camHeight 		= 240;
+	camWidth 		= 160;	// try to grab at this size.
+	camHeight 		= 120;
 	
     //we can now get back a list of devices. 
 	vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -22,8 +22,8 @@ void testApp::setup(){
 	vidGrabber.setDesiredFrameRate(60);
 	vidGrabber.initGrabber(camWidth,camHeight,true);
 	
-//	videoInverted 	= new unsigned char[camWidth*camHeight*3];
-//	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
+	videoInverted 	= new unsigned char[camWidth*camHeight*3];
+	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
 	ofSetVerticalSync(true);
     
 #ifdef TARGET_OPENGLES
@@ -63,13 +63,13 @@ void testApp::setup(){
     m_ofVBOMesh.addVertex(ofVec3f(0,0,0));
     m_ofVBOMesh.addTexCoord(ofVec2f(0,0));
     
-    m_ofVBOMesh.addVertex(ofVec3f(0,240,0));
+    m_ofVBOMesh.addVertex(ofVec3f(0,camHeight,0));
     m_ofVBOMesh.addTexCoord(ofVec2f(0,camHeight));
     
-    m_ofVBOMesh.addVertex(ofVec3f(320,0,0));
+    m_ofVBOMesh.addVertex(ofVec3f(camWidth,0,0));
     m_ofVBOMesh.addTexCoord(ofVec2f(camWidth,0));
     
-    m_ofVBOMesh.addVertex(ofVec3f(320,240,0));
+    m_ofVBOMesh.addVertex(ofVec3f(camWidth,camHeight,0));
     m_ofVBOMesh.addTexCoord(ofVec2f(camWidth,camHeight));
 }
 
@@ -87,14 +87,14 @@ void testApp::update(){
         mVidUpdateTime = ofGetElapsedTimef();
         
     }
-//	if (vidGrabber.isFrameNew()){
-//		int totalPixels = camWidth*camHeight*3;
-//		unsigned char * pixels = vidGrabber.getPixels();
-//		for (int i = 0; i < totalPixels; i++){
-//			videoInverted[i] = 255 - pixels[i];
-//		}
-//		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
-//	}
+	if (vidGrabber.isFrameNew()){
+		int totalPixels = camWidth*camHeight*3;
+		unsigned char * pixels = vidGrabber.getPixels();
+		for (int i = 0; i < totalPixels; i++){
+			videoInverted[i] = 255 - pixels[i];
+		}
+		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
+	}
 //    ofLog(OF_LOG_NOTICE, "completing update at %f",);
     mUpdateTime =(ofGetElapsedTimef()-startTime);
 }
@@ -123,7 +123,7 @@ void testApp::draw(){
     ofTranslate(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
     ofTranslate(rot);
     m_ofVBOMesh.draw();
-    
+    ofRect(500,500,10,10);
     ofPopMatrix();
     
     ofRect(500,500,320,240);//
@@ -133,14 +133,13 @@ void testApp::draw(){
 	}
     mDrawTime =(ofGetElapsedTimef()-startTime);
     
-    
     ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),600,100);
     ofDrawBitmapString("mVidUpdateInterval: "+ofToString(mVidUpdateInterval),600,150);
     ofDrawBitmapString("rot: "+ofToString(rot),600,200);
-//    vidGrabber.draw(20,20);
+    vidGrabber.draw(20,800);
     
 //ofLog(OF_LOG_NOTICE, "completing draw at %f",);
-//    vidGrabber.draw(20,20);
+    vidGrabber.draw(820,20);
 //	vidGrabber.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 //	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
 }
