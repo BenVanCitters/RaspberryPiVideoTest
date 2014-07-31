@@ -25,6 +25,8 @@ class testApp : public ofBaseApp{
 		ofTexture			videoTexture;
 		int 				camWidth;
 		int 				camHeight;
+    float mVidUpdateTime;
+    float mVidUpdateInterval;
     float mUpdateTime;
     float mDrawTime;
     ofShader shader;

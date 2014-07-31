@@ -22,8 +22,8 @@ void testApp::setup(){
 	vidGrabber.setDesiredFrameRate(60);
 	vidGrabber.initGrabber(camWidth,camHeight,true);
 	
-	videoInverted 	= new unsigned char[camWidth*camHeight*3];
-	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
+//	videoInverted 	= new unsigned char[camWidth*camHeight*3];
+//	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
 	ofSetVerticalSync(true);
     
 #ifdef TARGET_OPENGLES
@@ -77,11 +77,16 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	float startTime =ofGetElapsedTimef();
-    ofBackground(0,0,0);
+    
     
 //	ofLog(OF_LOG_NOTICE, "starting update at %f",);
 	vidGrabber.update();
-	
+	if (vidGrabber.isFrameNew())
+    {
+        mVidUpdateInterval =ofGetElapsedTimef() -mVidUpdateTime;
+        mVidUpdateTime = ofGetElapsedTimef();
+        
+    }
 //	if (vidGrabber.isFrameNew()){
 //		int totalPixels = camWidth*camHeight*3;
 //		unsigned char * pixels = vidGrabber.getPixels();
@@ -96,6 +101,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+    ofBackground(0,0,0);
     float startTime =ofGetElapsedTimef();
     if( doShader ){
 		shader.begin();
@@ -128,8 +134,9 @@ void testApp::draw(){
     mDrawTime =(ofGetElapsedTimef()-startTime);
     
     
-    ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),100,100);
-    ofDrawBitmapString("rot: "+ofToString(rot),100,200);
+    ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),600,100);
+    ofDrawBitmapString("mVidUpdateInterval: "+ofToString(mVidUpdateInterval),600,150);
+    ofDrawBitmapString("rot: "+ofToString(rot),600,200);
 //    vidGrabber.draw(20,20);
     
 //ofLog(OF_LOG_NOTICE, "completing draw at %f",);
