@@ -4,10 +4,10 @@
 void testApp::setup()
 {
 
-	camWidth 		= 320;	// try to grab at this size.
-	camHeight 		= 240;
+	camWidth 		= 160;	// try to grab at this size.
+	camHeight 		= 120;
     
-    m_frameBuffer.allocate(camWidth, camHeight);
+    m_frameBuffer.allocate(camWidth, camHeight, GL_RGB);
 	
     //we can now get back a list of devices. 
 	vector<ofVideoDevice> devices = vidGrabber.listDevices();
@@ -43,7 +43,8 @@ void testApp::setup()
 //--------------------------------------------------------------
 void testApp::update()
 {
-	float startTime =ofGetElapsedTimef();
+    float curTime = ofGetElapsedTimef();
+	float startTime =curTime;
     
 	vidGrabber.update();
 	if (vidGrabber.isFrameNew())
@@ -63,7 +64,7 @@ void testApp::update()
 		for (int i = 0; i < totalPixels; i++)
         {
             
-            videoInverted[i] =   opixels[i]/2 + pixels[i]/2;  //255 - pixels[i];
+            videoInverted[i] =   opixels[i]*8.0/9 + pixels[i]/9.0;  //255 - pixels[i];
 		}
 		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 	}
