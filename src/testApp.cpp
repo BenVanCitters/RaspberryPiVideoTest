@@ -1,5 +1,5 @@
 #include "testApp.h"
-
+#include <math.h>
 //--------------------------------------------------------------
 void testApp::setup()
 {
@@ -55,16 +55,42 @@ void testApp::update()
     }
 //	if (vidGrabber.isFrameNew())
     {
+        
+        float colorMult = 1.f + .1f*sin(155+curTime/8.0);
+        float capToBufPct = .01f + .99f*(sin(curTime/6.033)+1)/2.f;
+        float bufToScrPct = .03f + .5*(1+sin(500+curTime/3.0))/2.f;
+        
+
 		int totalPixels = camWidth*camHeight*3;
-		unsigned char * pixels = vidGrabber.getPixels();
+        
+         unsigned char * pixels = vidGrabber.getPixels();
         ofPixels opixels;
 
         m_frameBuffer.readToPixels(opixels);
-//        m_frameBuffer.getTextureReference().
+        ofVec3f rotCtr(camWidth/3.f*(sin(curTime/4)+1)/2,camHeight*(sin(500+curTime/5)+1)/2);
+        for (int i = 0; i < totalPixels; i++)
+        {
+            float x = fmod(i,camWidth/3.f*1.0f);
+            float y = (i)/camWidth;
+            
+            float ang = atan2(y-rotCtr[0],x-rotCtr[1]);
+            float dist = .1+ofDist(x,y,rotCtr[0],rotCtr[1]);
+            float d = sin(curTime/8)*dist/30;
+            x += (d*cos(curTime/2+ang+HALF_PI));
+            y += (d*sin(curTime/2+ang+HALF_PI));
+            y = (y+ 1.*sin((x+curTime)/(20.*(1+sin(curTime/2.1))/2)));
+            x = (x- 4.*sin((y+curTime/2)/(18.*(1+sin(curTime/5))/2)));
+            int ny = (int)(y);
+            int nx = (int)(x);
+            ny = (ny%camHeight) * camWidth;
+            nx = nx%camWidth;
+            int tmpIndex = (ny + nx);
+            videoInverted[i] = (tmpIndex%(totalPixels) + (totalPixels))%(totalPixels);
+        }
 		for (int i = 0; i < totalPixels; i++)
         {
-            
-            videoInverted[i] =   opixels[i]*8.0/9 + pixels[i]/9.0;  //255 - pixels[i];
+            videoInverted[i] =ofLerp(videoInverted[i], pixels[i], capToBufPct);
+            videoInverted[i] =ofLerp(videoInverted[i], (int)(opixels[i]*colorMult), bufToScrPct);
 		}
 		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 	}
