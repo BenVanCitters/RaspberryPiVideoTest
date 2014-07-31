@@ -1,19 +1,26 @@
 #include "testApp.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
-	
-	camWidth 		= 160;	// try to grab at this size.
-	camHeight 		= 120;
+void testApp::setup()
+{
+
+	camWidth 		= 320;	// try to grab at this size.
+	camHeight 		= 240;
+    
+    m_frameBuffer.allocate(camWidth, camHeight);
 	
     //we can now get back a list of devices. 
 	vector<ofVideoDevice> devices = vidGrabber.listDevices();
 	
-    for(unsigned int i = 0; i < devices.size(); i++){
+    for(unsigned int i = 0; i < devices.size(); i++)
+    {
 		cout << devices[i].id << ": " << devices[i].deviceName; 
-        if( devices[i].bAvailable ){
+        if( devices[i].bAvailable )
+        {
             cout << endl;
-        }else{
+        }
+        else
+        {
             cout << " - unavailable " << endl; 
         }
 	}
@@ -24,7 +31,7 @@ void testApp::setup(){
 	
 	videoInverted 	= new unsigned char[camWidth*camHeight*3];
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);	
-	ofSetVerticalSync(true);
+//	ofSetVerticalSync(true);
     
 #ifdef TARGET_OPENGLES
     ofFile vertShader(ofToDataPath("shaders_gles/noise.vert"));
@@ -39,7 +46,8 @@ void testApp::setup(){
     }
 	shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
 #else
-	if(ofGetGLProgrammableRenderer()){
+	if(ofGetGLProgrammableRenderer())
+    {
 		shader.load("shaders_gl3/noise.vert", "shaders_gl3/noise.frag");
 	}else{
         ofFile vertShader(ofToDataPath("shaders/noise.vert"));
@@ -75,7 +83,8 @@ void testApp::setup(){
 
 
 //--------------------------------------------------------------
-void testApp::update(){
+void testApp::update()
+{
 	float startTime =ofGetElapsedTimef();
     
     
@@ -87,7 +96,8 @@ void testApp::update(){
         mVidUpdateTime = ofGetElapsedTimef();
         
     }
-	if (vidGrabber.isFrameNew()){
+	if (vidGrabber.isFrameNew())
+    {
 		int totalPixels = camWidth*camHeight*3;
 		unsigned char * pixels = vidGrabber.getPixels();
 		for (int i = 0; i < totalPixels; i++){
@@ -100,23 +110,19 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
+void testApp::draw()
+{
+    m_frameBuffer.begin();
     ofBackground(0,0,0);
     float startTime =ofGetElapsedTimef();
-    if( doShader ){
+    if( doShader )
+    {
 		shader.begin();
-        //we want to pass in some varrying values to animate our type / color
-//        shader.setUniformTexture("s_texture", vidGrabber.getTextureReference(), 1);
-        shader.setUniform1f("timeValX", ofGetElapsedTimef() * 0.1 );
-        shader.setUniform1f("timeValY", -ofGetElapsedTimef() * 0.18 );
-        
-        //we also pass in the mouse position
-        //we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped.
-        shader.setUniform2f("mouse", mouseX - ofGetWidth()/2, ofGetHeight()/2-mouseY );
+        shader.setUniform1f("timeVal", ofGetElapsedTimef() * 0.1 );
         shader.setUniformTexture("s_texture", videoTexture , 1 );
 	}
     
-//    ofSetHexColor(0xffffff);
+//
     float curTime = ofGetElapsedTimef();
     ofSetColor(255*(1+cos(curTime))/2,255*(sin(curTime)+1)/2, 255*(cos(curTime)+1)/2,255*(sin(144+curTime)+1)/2);
 
@@ -130,27 +136,27 @@ void testApp::draw(){
     
     ofRect(500,500,320,240);//
 
-	if( doShader ){
+	if( doShader )
+    {
 		shader.end();
 	}
-    mDrawTime =(ofGetElapsedTimef()-startTime);
     
+    
+	videoTexture.draw(0,0);
+    ofSetHexColor(0xffffff);
+    m_frameBuffer.end();
+    m_frameBuffer.draw(0,0,1000,1000);
+
+    mDrawTime =(ofGetElapsedTimef()-startTime);
     ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),600,100);
     ofDrawBitmapString("mVidUpdateInterval: "+ofToString(mVidUpdateInterval),600,150);
     ofDrawBitmapString("rot: "+ofToString(rot),600,200);
-//    vidGrabber.draw(20,800);
-//    vidGrabber.draw(0,0,, <#float y#>, <#float w#>, <#float h#>)
-    
-//ofLog(OF_LOG_NOTICE, "completing draw at %f",);
-//    vidGrabber.draw(820,20);
-	videoTexture.draw(0,0,1000,1000);
-//	videoTexture.draw(20+camWidth,20,camWidth,camHeight);
 }
 
 
 //--------------------------------------------------------------
-void testApp::keyPressed  (int key){ 
-	
+void testApp::keyPressed  (int key)
+{
 	// in fullscreen mode, on a pc at least, the 
 	// first time video settings the come up
 	// they come up *under* the fullscreen window
@@ -164,46 +170,52 @@ void testApp::keyPressed  (int key){
 	if (key == 's' || key == 'S'){
 		vidGrabber.videoSettings();
 	}
-	
-	
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){ 
-	
-}
-
-//--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
+void testApp::keyReleased(int key)
+{
 	
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void testApp::mouseMoved(int x, int y )
+{
 	
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
+void testApp::mouseDragged(int x, int y, int button)
+{
 	
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void testApp::mousePressed(int x, int y, int button)
+{
+	
+}
+
+//--------------------------------------------------------------
+void testApp::mouseReleased(int x, int y, int button)
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void testApp::windowResized(int w, int h)
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){
+void testApp::gotMessage(ofMessage msg)
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
+void testApp::dragEvent(ofDragInfo dragInfo)
+{
 
 }

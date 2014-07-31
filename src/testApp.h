@@ -32,4 +32,5 @@ class testApp : public ofBaseApp{
     ofShader shader;
     bool doShader;
     ofVboMesh m_ofVBOMesh; 
+    ofFbo m_frameBuffer;
 };
