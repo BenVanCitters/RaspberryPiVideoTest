@@ -35,24 +35,8 @@ void testApp::setup()
     
 
 
-#ifdef OF_VIDEO_CAPTURE_IOS
-    cout <<  "ofxiOSVideoGrabber.h" << endl;
-#endif
-#ifdef OF_VIDEO_CAPTURE_QUICKTIME
-    cout <<  "ofQuickTimeGrabber.h" << endl;
-#endif
-#ifdef OF_VIDEO_CAPTURE_QTKIT
-    cout <<  "ofQTKitGrabber.h" << endl;
-#endif
-#ifdef OF_VIDEO_CAPTURE_DIRECTSHOW
-    cout <<   "ofDirectShowGrabber.h" << endl;
-#endif
-#ifdef OF_VIDEO_CAPTURE_GSTREAMER
-    cout <<  "ofGstVideoGrabber.h" << endl;
-#endif
-#ifdef OF_VIDEO_CAPTURE_ANDROID
-    cout <<  "ofxAndroidVideoGrabber.h" << endl;
-#endif
+//video grabber - rpi uses /Users/benvancitters/Documents/of_v0.8.0_osx_release/libs/openFrameworks/video/ofGstVideoGrabber.h
+//video grabber - rpi uses ofQTKitGrabber.h
 }
 
 
@@ -68,12 +52,18 @@ void testApp::update()
         mVidUpdateTime = ofGetElapsedTimef();
         
     }
-	if (vidGrabber.isFrameNew())
+//	if (vidGrabber.isFrameNew())
     {
 		int totalPixels = camWidth*camHeight*3;
 		unsigned char * pixels = vidGrabber.getPixels();
-		for (int i = 0; i < totalPixels; i++){
-			videoInverted[i] = 255 - pixels[i];
+        ofPixels opixels;
+
+        m_frameBuffer.readToPixels(opixels);
+//        m_frameBuffer.getTextureReference().
+		for (int i = 0; i < totalPixels; i++)
+        {
+            
+            videoInverted[i] =   opixels[i]/2 + pixels[i]/2;  //255 - pixels[i];
 		}
 		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
 	}
@@ -83,12 +73,13 @@ void testApp::update()
 //--------------------------------------------------------------
 void testApp::draw()
 {
+//    m_frameBuffer.getTextureReference().
     float startTime =ofGetElapsedTimef();
     m_frameBuffer.begin();
-    ofBackground(0,0,0);
+//    ofBackground(0,0,0);
     
     float curTime = ofGetElapsedTimef();
-    ofSetColor(255*(1+cos(curTime))/2,255*(sin(curTime)+1)/2, 255*(cos(curTime)+1)/2,255*(sin(144+curTime)+1)/2);
+//    ofSetColor(255*(1+cos(curTime))/2,255*(sin(curTime)+1)/2, 255*(cos(curTime)+1)/2,255*(sin(144+curTime)+1)/2);
 
     ofVec2f rot(400*cos(curTime),400*sin(curTime));
     ofPushMatrix();
@@ -103,7 +94,7 @@ void testApp::draw()
 	videoTexture.draw(0,0);
     ofSetHexColor(0xffffff);
     m_frameBuffer.end();
-    m_frameBuffer.draw(0,0,1000,1000);
+    m_frameBuffer.draw(0,0,600,600);
 
     mDrawTime =(ofGetElapsedTimef()-startTime);
     ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),600,100);
