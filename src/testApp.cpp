@@ -108,25 +108,16 @@ void testApp::draw()
     float curTime = ofGetElapsedTimef();
 //    ofSetColor(255*(1+cos(curTime))/2,255*(sin(curTime)+1)/2, 255*(cos(curTime)+1)/2,255*(sin(144+curTime)+1)/2);
 
-    ofVec2f rot(400*cos(curTime),400*sin(curTime));
-    ofPushMatrix();
-    ofTranslate(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
-    ofTranslate(rot);
-    ofRect(500,500,10,10);
-    ofPopMatrix();
-    
-    ofRect(500,500,320,240);//
-    
     
 	videoTexture.draw(0,0);
-    ofSetHexColor(0xffffff);
+
     m_frameBuffer.end();
-    m_frameBuffer.draw(0,0,600,600);
+    ofSetHexColor(0xffffff);
+    m_frameBuffer.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 
     mDrawTime =(ofGetElapsedTimef()-startTime);
     ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),600,100);
     ofDrawBitmapString("mVidUpdateInterval: "+ofToString(mVidUpdateInterval),600,150);
-    ofDrawBitmapString("rot: "+ofToString(rot),600,200);
 }
 
 
