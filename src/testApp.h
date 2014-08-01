@@ -37,4 +37,6 @@ class testApp : public ofBaseApp{
     float mUpdateTime;
     float mDrawTime;
     ofFbo m_frameBuffer;
+    ofPixels opixels;
+    bool showText;
 };
