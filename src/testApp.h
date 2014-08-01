@@ -2,8 +2,13 @@
 
 #include "ofMain.h"
 
+
+
 class testApp : public ofBaseApp{
 	
+    float sn(double t);
+
+    
 	public:
 		
 		void setup();
@@ -25,6 +30,8 @@ class testApp : public ofBaseApp{
 		ofTexture			videoTexture;
 		int 				camWidth;
 		int 				camHeight;
+    int lookupSz;
+    float* sinlkup;
     float mVidUpdateTime;
     float mVidUpdateInterval;
     float mUpdateTime;

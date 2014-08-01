@@ -3,10 +3,16 @@
 //--------------------------------------------------------------
 void testApp::setup()
 {
-
 	camWidth 		= 160;	// try to grab at this size.
 	camHeight 		= 120;
     
+    lookupSz = 600;
+    sinlkup = new float[(int)((lookupSz)*M_PI*2)];
+    for(int i = 0; i < lookupSz; i++)
+    {
+        sinlkup[i] = sin(i*2.f*M_PI/lookupSz);
+    }
+                        
     m_frameBuffer.allocate(camWidth, camHeight, GL_RGB);
 	
     //we can now get back a list of devices. 
@@ -39,6 +45,16 @@ void testApp::setup()
 //video grabber - rpi uses ofQTKitGrabber.h
 }
 
+float testApp::sn(double t)
+{
+//    t += M_PI*2*(abs((int)(t/(2*M_PI))) + 1);
+    t =fmodl(t,2*M_PI) + 2*M_PI;
+    t = fmodl(t,2*M_PI);
+    t /= 2*M_PI;
+    t *= lookupSz;
+    return sinlkup[(int)t];
+}
+
 
 //--------------------------------------------------------------
 void testApp::update()
@@ -57,8 +73,8 @@ void testApp::update()
     {
         
         float colorMult = 1.f + .1f*sin(155+curTime/8.0);
-        float capToBufPct = .01f + .99f*(sin(curTime/6.033)+1)/2.f;
-        float bufToScrPct = .03f + .5*(1+sin(500+curTime/3.0))/2.f;
+        float capToBufPct = .01f + .99f*(sn(curTime/6.033)+1)/2.f;
+        float bufToScrPct = .03f + .5*(1+sn(500+curTime/3.0))/2.f;
         
 
 		int totalPixels = camWidth*camHeight*3;
@@ -67,25 +83,54 @@ void testApp::update()
         ofPixels opixels;
 
         m_frameBuffer.readToPixels(opixels);
-        ofVec3f rotCtr(camWidth/3.f*(sin(curTime/4)+1)/2,camHeight*(sin(500+curTime/5)+1)/2);
+        float wxh =totalPixels/3.f;
+        ofVec3f rotCtr(camWidth/3.f*(sn(curTime/4)+1)/2,camHeight*(sn(500+curTime/5)+1)/2);
+//        for (int i = 0; i < totalPixels/3; i++)
+//        {
+//            float x = fmod(i,camWidth*1.0f);
+//            float y = (i)/camWidth;
+//            
+//            float ang = atan2(y-rotCtr[0],x-rotCtr[1]);
+//            float dist = .1+ofDist(x,y,rotCtr[0],rotCtr[1]);
+//            float d = sn(curTime/8)*dist/30;
+//            x += (d*cos(curTime/2+ang+HALF_PI));
+//            y += (d*sn(curTime/2+ang+HALF_PI));
+//            y = (y+ 1.*sn((x+curTime)/(20.*(1+sn(curTime/2.1))/2)));
+//            x = (x- 4.*sn((y+curTime/2)/(18.*(1+sn(curTime/5))/2)));
+//            int ny = (int)(y);
+//            int nx = (int)(x);
+//            ny = (ny%camHeight) * camWidth;
+//            nx = nx%camWidth;
+//            int tmpIndex = (ny + nx);
+//            int newColorIdx = fmodf(fmodf(tmpIndex,wxh) + wxh, wxh);
+//            int* newColor = (int*)(&pixels[newColorIdx]);
+//            int actualColor = (*newColor);
+//            videoInverted[3*i+0] = actualColor;//(tmpIndex%(wxh) + (wxh))%(wxh);
+//            videoInverted[3*i+1] = (tmpIndex%(wxh) + (wxh))%(wxh);
+//            videoInverted[3*i+2] = (tmpIndex%(wxh) + (wxh))%(wxh);
+//        }
+        
         for (int i = 0; i < totalPixels; i++)
         {
-            float x = fmod(i,camWidth/3.f*1.0f);
-            float y = (i)/camWidth;
+            float x = fmod(i,camWidth*3.0f);
+            float y = (i)/(camWidth*3);
             
-            float ang = atan2(y-rotCtr[0],x-rotCtr[1]);
-            float dist = .1+ofDist(x,y,rotCtr[0],rotCtr[1]);
-            float d = sin(curTime/8)*dist/30;
-            x += (d*cos(curTime/2+ang+HALF_PI));
-            y += (d*sin(curTime/2+ang+HALF_PI));
-            y = (y+ 1.*sin((x+curTime)/(20.*(1+sin(curTime/2.1))/2)));
-            x = (x- 4.*sin((y+curTime/2)/(18.*(1+sin(curTime/5))/2)));
+//            float ang = atan2(y-rotCtr[0],x-rotCtr[1]);
+//            float dist = .1+ofDist(x,y,rotCtr[0],rotCtr[1]);
+//            float d = sn(curTime/8)*dist/30;
+//            x += (d*cos(curTime/2+ang+HALF_PI));
+//            y += (d*sn(curTime/2+ang+HALF_PI));
+//            y = (y+ 1.*sn((x+curTime)/(20.*(1+sn(curTime/2.1))/2)));
+//            x = (x- 4.*sn((y+curTime/2)/(18.*(1+sn(curTime/5))/2)));
+            float d = 25;
+            x += (d*sn(HALF_PI+y/7.f+curTime*1.5));
+            y += (d*sn(x/10.f+curTime*2));
             int ny = (int)(y);
             int nx = (int)(x);
-            ny = (ny%camHeight) * camWidth;
-            nx = nx%camWidth;
+            ny = (ny%camHeight) * camWidth*3;
+            nx = nx%(camWidth*3);
             int tmpIndex = (ny + nx);
-            videoInverted[i] = (tmpIndex%(totalPixels) + (totalPixels))%(totalPixels);
+            videoInverted[i] = opixels[(tmpIndex%(totalPixels) + (totalPixels))%(totalPixels)];
         }
 		for (int i = 0; i < totalPixels; i++)
         {
@@ -116,8 +161,8 @@ void testApp::draw()
     m_frameBuffer.draw(0,0,ofGetScreenWidth(),ofGetScreenHeight());
 
     mDrawTime =(ofGetElapsedTimef()-startTime);
-    ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),600,100);
-    ofDrawBitmapString("mVidUpdateInterval: "+ofToString(mVidUpdateInterval),600,150);
+    ofDrawBitmapString("updateTime: "+ofToString(mUpdateTime)+ " drawTime: " + ofToString(mDrawTime),40,100);
+    ofDrawBitmapString("mVidUpdateInterval: "+ofToString(mVidUpdateInterval),40,150);
 }
 
 
