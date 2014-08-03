@@ -1,13 +1,11 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ThreadedIndexUpdate.h"
+//class ThreadedIndexUpdate;
 
-
-
-class testApp : public ofBaseApp{
-	
-    float sn(double t);
-
+class testApp : public ofBaseApp
+{
     
 	public:
 		
@@ -30,8 +28,7 @@ class testApp : public ofBaseApp{
 		ofTexture			videoTexture;
 		int 				camWidth;
 		int 				camHeight;
-    int lookupSz;
-    float* sinlkup;
+
     float mVidUpdateTime;
     float mVidUpdateInterval;
     float mUpdateTime;
@@ -39,4 +36,5 @@ class testApp : public ofBaseApp{
     ofFbo m_frameBuffer;
     ofPixels opixels;
     bool showText;
+    ThreadedIndexUpdate m_indexUpdater;
 };
