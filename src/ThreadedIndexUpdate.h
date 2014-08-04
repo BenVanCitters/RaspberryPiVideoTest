@@ -13,23 +13,24 @@
 
 class ThreadedIndexUpdate : public ofThread
 {
-    
-    int lookupSz;
+    int m_lookupSz;
     float* sinlkup;
-public:
-    int* m_indecies;
     int m_width;
     int m_height;
-        
+    float m_updateDuration;
+public:
+    //public for easy, fast access to the array
+    int* m_indecies;
+
+    //provides interface to the cached sine float array
     float sn(double t);
     ThreadedIndexUpdate();
     ~ThreadedIndexUpdate();
-//    void setup(int count);
     void setup(int width, int height);
     void start();
     void stop();
     void threadedFunction();
-
+    float getUpdateDuration();
 };
 
 #endif
